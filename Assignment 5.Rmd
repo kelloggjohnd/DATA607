@@ -1,0 +1,45 @@
+---
+title: "Untitled"
+author: "John Kellogg"
+date: "9/24/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(stringr)
+library(tidyr)
+library(dplyr)
+library(gdata)
+library(reader)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r}
+download <- download.file('https://raw.githubusercontent.com/kelloggjohnd/DATA607/master/Week5.csv', destfile = "Week5.csv", method = "wininet") 
+# manipulate the data into a data frame
+data_raw <- data.frame(read.csv(file = "Week5.csv", header = TRUE, sep = ","))
+
+names(data_raw)<- c("Flight", "Status", "Los.Angeles", "Phoenix", "San.Diego","San.Francisco" ,"Seattle")
+data_raw$Flight <- as.character(data_raw$Flight)
+data_raw$Status <- as.character(data_raw$Status)
+head(data_raw)
+```
+
+
+```{r flight_clean}
+data_raw [2,1] <- "ALASKA"
+data_raw [5,1] <- "AM WEST"
+head(data_raw)
+```
+Using the Gather method
+```{r}
+data_raw <- data_raw [-3,]
+data_raw<- gather(data_raw, "City", "flight_length", 3:7)
+data_raw
+```
