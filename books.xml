@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<book-table>
+	<book>
+		<ID>01</ID>
+		<Title>The Stand</Title>
+		<Author>Stephen King</Author>
+		<ISBN-13>9780385199575</ISBN-13>
+		<Publisher>Doubleday</Publisher>
+		<Publication_date>5/01/1990</Publication_date>
+		<Pages>1152</Pages>
+		<Related_Subject>Horror, Fantasy, Thriller</Related_Subject>
+	</book>
+	<book>
+		<ID>02</ID>
+		<Title>Harry Potter And The Goblet Of Fire</Title>
+		<Author>J.K.Rowling</Author>
+		<ISBN-13>9780439139601</ISBN-13>
+		<Publisher>Scholastic Paperbacks	</Publisher>
+		<Publication_date>09/01/2002</Publication_date>
+		<Pages>752</Pages>
+		<Related_Subject>Fantasy, YA fiction, Action</Related_Subject>
+	</book>
+	<book>
+		<ID>03</ID>
+		<Title>	Towers of Midnight</Title>
+		<Author>Robert Jordan, Brandon Sanderson</Author>
+		<ISBN-13>9780765364876</ISBN-13>
+		<Publisher>Tor Books</Publisher>
+		<Publication_date>1/31/2011</Publication_date>
+		<Pages>74</Pages>
+		<Related_Subject>Fantasy, High Fantasy, military fiction</Related_Subject>
+	</book>
+</book-table>
