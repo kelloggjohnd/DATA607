@@ -30,7 +30,6 @@ require(formattable)
 require(corpustools)
 require(ca)
 library(xml2)
-
 ```
 
 # Scraping Indeed for Soft Skills Relevant to a Data Scientist
@@ -78,7 +77,7 @@ page_result_start <- 10 # starting page
 page_result_end <- 200 # last page results
 page_results <- seq(from = page_result_start, to = page_result_end, by = 10)
  
-full_df <- data.frame()
+full_df_scrape <- data.frame()
 for(i in seq_along(page_results)) {
   
   first_page_url <- "https://www.indeed.com/jobs?q=data+scientist&l=new+york&radius=15"
@@ -340,7 +339,6 @@ for (i in 1:rows_soft_skils) {
   final_df[i,1] <- soft_skills[i,2]
   final_df[i,2] <- frequency
 }  
-
 ```
 
 ***
@@ -402,10 +400,8 @@ stats3 <- keywords_rake(x = x,
                       #relevant = x$upos %in% c("NOUN", "ADJ"),
                       relevant = x$upos %in% c("NOUN", "ADJ"),
                       ngram_max = 3)
-
 top20.Rake <- head(subset(stats3, freq > 40),20)
 top20.Rake
-
 ```
 
 ***
@@ -436,28 +432,35 @@ Previously we created and uploaded a list of soft skills to the SQL DB *skills_t
 
 **Soft Skills and Job Descriptions to Lower Case
 ```{r}
+Soft.Skills <- read.csv(file="https://raw.githubusercontent.com/kelloggjohnd/DATA607/master/MasterSkillListbyType.csv", header=TRUE, sep=",", stringsAsFactors=FALSE) 
 s.skills <- soft_skills %>% mutate(Text = tolower(Text))
 j.descriptions <- full_df %>% mutate(job_description = tolower(job_description))
-
 head(s.skills)
 View(s.skills)
 head(j.descriptions)
 ```
-
 ***
 
 #### 2.4 Not sure what this is
 
 ```{r}
 library(stringi)
-skill.count <- data.frame(matrix(NA, nrow = row.count, ncol = 2))
-SL.size <- nrow(s.skills)
-for (i in 1:SL.size) {
-  string <- s.skills[i,2] %>% as.String()
+#Get size of Skill list
+row.count <- nrow(s.skills)
+#Create a data frame skill.count and filled with empty values
+skill.count <- data.frame(matrix(NA, nrow = row.count, ncol = 3))
+
+#The skill list (s.skills) has 3 columns. 2nd column is the work field while the 3r is the skill itself
+for (i in 1:row.count) {
+  string <- s.skills[i,3] %>% as.String()
   string.count <- stri_count_regex(j.descriptions$job_description, string) %>% as.data.frame() %>% colSums()
+  #Field everyy row in the empty skill.count table with work field, skill name and frequency count
   skill.count[i,1] <- s.skills[i,2]
-  skill.count[i,2] <- string.count
+  skill.count[i,2] <- s.skills[i,3]
+  skill.count[i,3] <- string.count
 }  
+colnames(skill.count) <- c("Area", "Skill_Name", "Frequency")
+skill.count
 ```
 
 ```{r}
@@ -483,7 +486,6 @@ library(udpipe)
 cooc <- cooccurrence(x = subset(x, upos %in% c("NOUN", "ADJ")), 
                      term = "lemma", 
                      group = c("doc_id", "paragraph_id", "sentence_id"), skipgram = 4)
-
 dim(cooc)
 ```
 
@@ -493,7 +495,6 @@ dim(cooc)
 ```{r}
 library(tidytext)
 slill.comp <- c("analysis", "design", "focus", "innovation", "insight", "integrity", "organization", "presentation", "process", "improvement", "research", "skills", "adaptability", "supervising", "tolerance", "coordination", "planning", "professional", "training", "collaborative", "motivated", "work", "experience", "verbal", "responsible", "person")
-
 cooc <- subset(cooc, term1 %in% slill.comp)
 cooc <- subset(cooc, term2 %in% slill.comp)
 dim(cooc)
@@ -526,18 +527,14 @@ We can also analyze how the skill words are cluster together and visualize the r
 
 ```{r}
 ### Dendrogram using community detection
-
 # Community structure detection based on edge betweenness (http://igraph.org/r/doc/cluster_edge_betweenness.html)
 cluster_edge_betweenness(wordnetwork, weights = E(wordnetwork)$cooc)
-
 # Community detection via random walks (http://igraph.org/r/doc/cluster_walktrap.html)
 cluster_walktrap(wordnetwork, weights = E(wordnetwork)$cooc, steps = 4)
-
 # Community detection via optimization of modularity score
 # This works for undirected graphs only
 wordnetwork2 <- as.undirected(wordnetwork) # an undirected graph
 cluster_fast_greedy(wordnetwork2, weights = E(wordnetwork2)$cooc)
-
 # Note that you can plot community object
 comm <- cluster_fast_greedy(wordnetwork2, weights = E(wordnetwork2)$cooc)
 #plot_dendrogram(comm, palette = categorical_pal(8))
@@ -559,7 +556,6 @@ final_df <- final_df %>%
   arrange(-Frequency)
 kable(head(final_df, n = 10L), align = rep('c', 2)) %>% 
   kable_styling(bootstrap_options = c("striped"), full_width = F)
-
 final_df_sub <- final_df[c(1:12),]
   
 ggplot(final_df_sub, aes(x=reorder(`Soft Skill`, Frequency),y=Frequency)) +
@@ -583,7 +579,6 @@ The delta value is a good way to compare the soft skills prioritized by Data Sci
 DataN <- nrow(full_df)
 NurseN <- nrow(nurse_full_df)
 SkillN <- nrow(soft_skills)
-
 #For each Soft Skill,
 for (j in 1:SkillN){
   # add a zero entry under the column NurseCounts in final_df
@@ -596,20 +591,15 @@ for (j in 1:SkillN){
 }
 #Copy this to a separate dataframe (to avoid altering the total dataframe)
 delta_df <- final_df
-
 #Add columns for the frequency per job listing each skill appeared
 delta_df$DataProp <- round(delta_df$Frequency / DataN, 4)
 delta_df$NurseProp <- round(delta_df$NurseCount / NurseN, 4)
-
 #Add a column that calculates the delta between the per listing amounts within Data Analyst listings and Nurse listings. 
 delta_df$Delta <- delta_df$DataProp - delta_df$NurseProp
-
 #Rename the columns  
 names(delta_df) <- c("Skill", "DataCount", "NurseCount", "DataProp", "NurseProp", "Delta")
-
 #Finally, isolate only those skills that were present in at least one job listing to narrow the relevant list
 delta_df <- delta_df[!(delta_df$DataCount == 0 & delta_df$NurseCount == 0),]
-
 ```
 
 ```{r delta_plots}
@@ -654,63 +644,51 @@ full_df %>%
   filter (grepl('analysis',job_description, ignore.case = TRUE))%>%
     mutate(analysis = 'analysis')%>%
       count(analysis)
-
 key_word_2 <- 
   full_df %>% 
    filter (grepl('research',job_description, ignore.case = TRUE))%>%
     mutate(research = 'research')%>%
       count(research)
-
 key_word_3 <- 
   full_df %>% 
    filter (grepl('focus',job_description, ignore.case = TRUE))%>%
     mutate(focus = 'focus')%>%
       count(focus)
-
 key_word_4 <- 
   full_df %>% 
    filter (grepl('insight',job_description, ignore.case = TRUE))%>%
     mutate(insight = 'insight')%>%
       count(insight)
-
 key_word_5 <- 
   full_df %>% 
    filter (grepl('design',job_description, ignore.case = TRUE))%>%
     mutate(design = 'design')%>%
       count(design)
-
 key_word_6 <- 
   full_df %>% 
    filter (grepl('organization',job_description, ignore.case = TRUE))%>%
     mutate(organization = 'organization')%>%
       count(organization)
-
 key_word_7 <- 
   full_df %>% 
    filter (grepl('innovation',job_description, ignore.case = TRUE))%>%
     mutate(innovation = 'innovation')%>%
       count(innovation)
-
 key_word_8 <- 
   full_df %>% 
    filter (grepl('integrity',job_description, ignore.case = TRUE))%>%
     mutate(integrity = 'integrity')%>%
       count(integrity)
-
 key_word_9 <- 
   full_df %>% 
    filter (grepl('presentation',job_description, ignore.case = TRUE))%>%
     mutate(presentation = 'presentation')%>%
       count(presentation)
-
 key_word_10 <- 
   full_df %>% 
    filter (grepl('process improvement',job_description, ignore.case = TRUE))%>%
     mutate(improvement = 'improvement')%>%
       count(improvement)
-
-
-
 key_total <-  key_word_1 %>%
   full_join(key_word_2, by = "n")%>%
   full_join(key_word_3, by = "n")%>%
@@ -724,10 +702,8 @@ key_total <-  key_word_1 %>%
   rename (kword = analysis) %>%
   mutate(kword = c('analysis','research', 'focus', 'insight', 'design', 'organization', 'innovation', 'integrity', 'presentation', 'process improvement'))%>%
   select (kword, n)
-
 mean.n <- function(x){
   return(c(y = median(x)*0.97, label = round(mean(x),2)))}
-
 ggplot(data=key_total, 
        aes(x = reorder(kword, +n), y=n, fill=kword))+
         geom_bar(stat = "identity")+
@@ -737,7 +713,6 @@ ggplot(data=key_total,
         theme(axis.text.x = element_text(angle = 90, hjust = 1, face = "bold"))+
    stat_summary(fun.data = mean.n, geom = "text", fun.y = mean, colour = "black")+
         xlab("Key Word")+ylab("Number of postings")
-
 ```
 
 ***
@@ -760,57 +735,46 @@ full_df %>%
   filter (grepl('machine learning',job_description, ignore.case = TRUE))%>%
     mutate(machine_learning = 'machine learning')%>%
       count(machine_learning)
-
 h_key_word_2 <- 
   full_df %>% 
    filter (grepl('research',job_description, ignore.case = TRUE))%>%
     mutate(research = 'research')%>%
       count(research)
-
 h_key_word_3 <- 
   full_df %>% 
    filter (grepl('python',job_description, ignore.case = TRUE))%>%
     mutate(python = 'python')%>%
       count(python)
-
 h_key_word_4 <- 
   full_df %>% 
    filter (grepl('statistics',job_description, ignore.case = TRUE))%>%
     mutate(statistics = 'statistics')%>%
       count(statistics)
-
 h_key_word_5 <- 
   full_df %>% 
    filter (grepl('SQL',job_description, ignore.case = TRUE))%>%
     mutate(SQL = 'SQL')%>%
       count(SQL)
-
 h_key_word_6 <- 
   full_df %>% 
    filter (grepl('programming',job_description, ignore.case = TRUE))%>%
     mutate(programming = 'programming')%>%
       count(programming)
-
 h_key_word_7 <- 
   full_df %>% 
    filter (grepl('data analysis',job_description, ignore.case = TRUE))%>%
     mutate(data_analysis = 'data analysis')%>%
       count(data_analysis)
-
 h_key_word_8 <- 
   full_df %>% 
    filter (grepl('machine learning techniques',job_description, ignore.case = TRUE))%>%
     mutate(ML_techniques = 'machine learning techniques')%>%
       count(ML_techniques)
-
 h_key_word_9 <- 
   full_df %>% 
    filter (grepl('big data',job_description, ignore.case = TRUE))%>%
     mutate(big_data = 'big data')%>%
       count(big_data)
-
-
-
 h_key_total <-  h_key_word_1 %>%
   full_join(h_key_word_2, by = "n")%>%
   full_join(h_key_word_3, by = "n")%>%
@@ -823,10 +787,8 @@ h_key_total <-  h_key_word_1 %>%
     rename (kword = machine_learning) %>%
   mutate(kword = c('machine_learning','research', 'python', 'statistics', 'SQL', 'programming', 'data_analysis', 'ML_techniques', 'big_data'))%>%
   select (kword, n)
-
 mean.n <- function(x){
   return(c(y = median(x)*0.97, label = round(mean(x),2)))}
-
 ggplot(data=h_key_total, 
        aes(x = reorder(kword, +n), y=n, fill=kword))+
         geom_bar(stat = "identity")+
@@ -909,7 +871,6 @@ plot(ca(k_pool), main = "Correspondence Analysis", pch = 19)
 
 
 ```{r}
-
 customGreen0 = "#DeF7E9"
 customGreen = "#71CA97"
 formattable(k_pool, align =c("c","c","c","c"), list(
@@ -940,5 +901,3 @@ While working on this project we often found ourselves thinking about additional
 * Accounting for the possibility that the Company Name contains a search term
 
 * Looking at searches in different parts of the world to see if the skills sought are affected by culture/geography
-
-
