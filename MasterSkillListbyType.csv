@@ -1,0 +1,384 @@
+,Field,Skill
+15,Analysis,visualization
+17,Analysis,data analysis
+45,Analysis,statistical analysis
+94,Analysis,web analytics
+139,Analysis,etl techniques
+36,Analytics,tableau
+115,Analytics,data cleansing
+150,Analytics,structure and unstructured data
+7,Business,marketing
+8,Business,technology
+10,Business,knowledge
+14,Business,management
+30,Business,reporting
+49,Business,microsoft
+52,Business,business intelligence
+59,Business,planning
+60,Business,spss
+65,Business,a/b testing
+71,Business,healthcare analytics
+72,Business,marketing optimization
+80,Business,project management
+98,Business,business analysis
+102,Business,microsoft office
+109,Business,strong presentation skills
+111,Business,ms office
+116,Business,team leadership
+117,Business,team management
+131,Business,classifications
+140,Business,develop kpis
+141,Business,developing data models
+151,Business,designing experiments
+152,Business,mlr
+153,Business,automating it tasks
+154,Business,understanding of cloud computing concepts
+155,Business,information assurance concepts
+156,Business,knowledge of federal security regulations
+157,Business,network protocals
+158,Business,deadline management
+159,Business,automating complex processes
+160,Business,writing clearly and succinctly
+161,Business,validate analytic procedures
+162,Business,financial industry working knowledge
+163,Business,devlope apis
+164,Business,behaviroal finance
+165,Business,technical teaching
+166,Business,quality by design experience
+167,Business,writing clearly
+168,Bussines,hospital or managed care environment
+12,Mathematics,statistics
+19,Mathematics,mathematics
+29,Mathematics,regression
+58,Mathematics,applied math
+76,Mathematics,matlab
+169,Mathematics,build statisical learning models
+170,Mathematics,statisical learning models
+171,Mathematics,mathlab
+172,Mathematics,regerssion
+173,Mathematics,mathlab
+1,Programming/Technical,r
+2,Programming/Technical,c
+3,Programming/Technical,c++
+5,Programming/Technical,python
+9,Programming/Technical,owl
+11,Programming/Technical,git
+13,Programming/Technical,sql
+22,Programming/Technical,spark
+23,Programming/Technical,java
+24,Programming/Technical,big data
+26,Programming/Technical,hadoop
+27,Programming/Technical,aws
+28,Programming/Technical,scala
+32,Programming/Technical,linux
+33,Programming/Technical,data mining 
+34,Programming/Technical,agile
+35,Programming/Technical,scikit
+37,Programming/Technical,pandas
+38,Programming/Technical,numpy
+39,Programming/Technical,sas
+40,Programming/Technical,tensorflow
+41,Programming/Technical,natural language processing
+42,Programming/Technical,nlp
+43,Programming/Technical,javascript
+44,Programming/Technical,javascript
+46,Programming/Technical,software development
+47,Programming/Technical,asp
+50,Programming/Technical,simulation
+54,Programming/Technical,machine learning models
+55,Programming/Technical,machine learning models
+56,Programming/Technical,nosql
+62,Programming/Technical,d3
+63,Programming/Technical,scipy
+64,Programming/Technical,docker
+66,Programming/Technical,etl
+67,Programming/Technical,hive
+68,Programming/Technical,building machine learning model
+69,Programming/Technical,spark ml
+70,Programming/Technical,impala
+73,Programming/Technical,powerbi
+74,Programming/Technical,stack
+77,Programming/Technical,programming skills
+78,Programming/Technical,attention to detail
+82,Programming/Technical,html
+85,Programming/Technical,data structures
+86,Programming/Technical,postgres
+87,Programming/Technical,perl
+88,Programming/Technical,mapreduce
+89,Programming/Technical,pig
+91,Programming/Technical,problem solving skills
+92,Programming/Technical,stata
+93,Programming/Technical,mongodb
+95,Programming/Technical,power bi
+96,Programming/Technical,qlik
+100,Programming/Technical,solr
+101,Programming/Technical,hive 
+103,Programming/Technical,command line
+104,Programming/Technical,analytical methods
+105,Programming/Technical,spotfire
+106,Programming/Technical,multivariate testing
+107,Programming/Technical,sparkml
+108,Programming/Technical,bash
+110,Programming/Technical,database management
+112,Programming/Technical,hdfs
+113,Programming/Technical,angular
+118,Programming/Technical,perl 
+119,Programming/Technical,powershell
+120,Programming/Technical,ruby
+121,Programming/Technical,computer programming
+122,Programming/Technical,xml
+123,Programming/Technical,ansible
+124,Programming/Technical,rdbms
+125,Programming/Technical,json
+128,Programming/Technical,splunk
+129,Programming/Technical,elk
+132,Programming/Technical,build machine learning models
+133,Programming/Technical,attribution modeling
+134,Programming/Technical,apache kafka
+135,Programming/Technical,sparql
+136,Programming/Technical,jmp
+142,Programming/Technical,command line scripting
+143,Programming/Technical,mlib
+144,Programming/Technical,siem
+145,Programming/Technical,database modeling
+146,Programming/Technical,ignite
+174,Programming/Technical,predictive anaytics
+175,Programming/Technical,build quantitative models
+176,Programming/Technical,tabulate
+177,Programming/Technical,sckit
+178,Programming/Technical,caret
+179,Programming/Technical,anti-ddos
+180,Programming/Technical,cyrptography
+181,Programming/Technical,stealthwatch
+182,Programming/Technical,suricata
+183,Programming/Technical,packet processing
+184,Programming/Technical,apache jena
+185,Programming/Technical,apache mesos
+186,Programming/Technical,security mechanisms
+187,Programming/Technical,crypographic algorithims
+188,Programming/Technical,malware reverse engineering
+189,Programming/Technical,mapforce
+190,Programming/Technical,h20.ai
+191,Programming/Technical,google machine learning
+192,Programming/Technical,develop cloud based infastructure
+193,Programming/Technical,devops tools
+194,Programming/Technical,rdf
+195,Programming/Technical,objectoriented programming
+196,Programming/Technical,pipeline pilot
+6,Soft Skill,focus
+16,Soft Skill,leadership
+18,Soft Skill,driven
+20,Soft Skill,quantitative
+21,Soft Skill,strategic
+25,Soft Skill,creative
+31,Soft Skill,positive
+48,Soft Skill,motivated
+51,Soft Skill,collaboration
+53,Soft Skill,consulting
+57,Soft Skill,self-starter
+61,Soft Skill,problem solving
+75,Soft Skill,curiosity
+79,Soft Skill,attention to detail
+81,Soft Skill,interpersonal skills
+83,Soft Skill,team player
+84,Soft Skill,team player
+90,Soft Skill,friendly
+97,Soft Skill,attention to detail 
+99,Soft Skill,enthusiasm
+114,Soft Skill,highly analytical
+126,Soft Skill,good communication
+127,Soft Skill,good communication
+130,Soft Skill,well organized
+137,Soft Skill,multitasking
+138,Soft Skill,good work ethic
+147,Soft Skill,strong people skills
+148,Soft Skill,ability to think creatively and strategically
+149,Soft Skill,meeting deadlines
+197,Soft Skill,relationship and organizational skills
+198,Soft Skill,cyber threat knowledge
+199,Soft Skill,global politics
+200,Soft Skill,good organziation
+201,Soft Skill,work independantly
+202,Soft Skill,customer service skills
+203,Soft Skill ,written communication and oral presentation skills
+,Soft Skill ,analysis
+,Soft Skill ,research
+,Soft Skill ,focus
+,Soft Skill ,design
+,Soft Skill ,professional
+,Soft Skill ,insight
+,Soft Skill ,organization
+,Soft Skill ,responsible
+,Soft Skill ,training
+,Soft Skill ,innovation
+,Soft Skill ,collaborative
+,Soft Skill ,integrity
+,Soft Skill ,initiative
+,Soft Skill ,discipline
+,Soft Skill ,process improvement
+,Soft Skill ,presentation skills
+,Soft Skill ,motivated
+,Soft Skill ,managing
+,Soft Skill ,verbal communication
+,Soft Skill ,planning
+,Soft Skill ,critical thinking
+,Soft Skill ,writing
+,Soft Skill ,problem solving
+,Soft Skill ,encouraging
+,Soft Skill ,commitment
+,Soft Skill ,experimenting
+,Soft Skill ,decision making
+,Soft Skill ,attentive
+,Soft Skill ,curiosity
+,Soft Skill ,written communication
+,Soft Skill ,decision-making
+,Soft Skill ,project management
+,Soft Skill ,collaborating
+,Soft Skill ,mentoring
+,Soft Skill ,confidence
+,Soft Skill ,reliable
+,Soft Skill ,clarity
+,Soft Skill ,storytelling
+,Soft Skill ,coordination
+,Soft Skill ,humility
+,Soft Skill ,coaching
+,Soft Skill ,time management
+,Soft Skill ,selling
+,Soft Skill ,troubleshooting
+,Soft Skill ,work-life balance
+,Soft Skill ,enthusiasm
+,Soft Skill ,listening
+,Soft Skill ,agility
+,Soft Skill ,customer service
+,Soft Skill ,inspiring
+,Soft Skill ,observation
+,Soft Skill ,results-oriented
+,Soft Skill ,scheduling
+,Soft Skill ,empathy
+,Soft Skill ,influential
+,Soft Skill ,prioritization
+,Soft Skill ,inspiration
+,Soft Skill ,performance management
+,Soft Skill ,brainstorming
+,Soft Skill ,coping
+,Soft Skill ,highly organized
+,Soft Skill ,networking
+,Soft Skill ,open-minded
+,Soft Skill ,resilience
+,Soft Skill ,sense of urgency
+,Soft Skill ,team building
+,Soft Skill ,adaptability
+,Soft Skill ,authenticity
+,Soft Skill ,interviewing
+,Soft Skill ,negotiation
+,Soft Skill ,strategic planning
+,Soft Skill ,facilitating
+,Soft Skill ,facilitation
+,Soft Skill ,imagination
+,Soft Skill ,mediation
+,Soft Skill ,people management
+,Soft Skill ,public speaking
+,Soft Skill ,resilient
+,Soft Skill ,humor
+,Soft Skill ,memory
+,Soft Skill ,punctual
+,Soft Skill ,supervising
+,Soft Skill ,allocating resources
+,Soft Skill ,crisis management
+,Soft Skill ,meeting management
+,Soft Skill ,business ethics
+,Soft Skill ,calm
+,Soft Skill ,delegation
+,Soft Skill ,idea exchange
+,Soft Skill ,optimistic
+,Soft Skill ,persistence
+,Soft Skill ,tolerance
+,Soft Skill ,versatility
+,Soft Skill ,accept feedback
+,Soft Skill ,competitiveness
+,Soft Skill ,dependability
+,Soft Skill ,emotional intelligence
+,Soft Skill ,generosity
+,Soft Skill ,goal-setting
+,Soft Skill ,introspection
+,Soft Skill ,lateral thinking
+,Soft Skill ,motivating
+,Soft Skill ,self-awareness
+,Soft Skill ,sensitivity
+,Soft Skill ,streamlining
+,Soft Skill ,talent management
+,Soft Skill ,active listening
+,Soft Skill ,acuity
+,Soft Skill ,artistic sense
+,Soft Skill ,assertiveness
+,Soft Skill ,body language
+,Soft Skill ,business etiquette
+,Soft Skill ,business trend awareness
+,Soft Skill ,conflict or dispute resolution
+,Soft Skill ,conflict resolution
+,Soft Skill ,cooperation
+,Soft Skill ,critical observation
+,Soft Skill ,cultural intelligence
+,Soft Skill ,deal-making
+,Soft Skill ,deal with difficult situations
+,Soft Skill ,dealing with difficult people
+,Soft Skill ,design sense
+,Soft Skill ,diplomacy
+,Soft Skill ,disability awareness
+,Soft Skill ,dispute resolution
+,Soft Skill ,divergent thinking
+,Soft Skill ,diversity awareness
+,Soft Skill ,emotion management
+,Soft Skill ,entrepreneurial thinking
+,Soft Skill ,friendliness
+,Soft Skill ,give clear feedback
+,Soft Skill ,giving feedback
+,Soft Skill ,independence
+,Soft Skill ,intercultural competence
+,Soft Skill ,interpersonal relationships
+,Soft Skill ,interpersonal relationships skills
+,Soft Skill ,knowledge management
+,Soft Skill ,logical reasoning
+,Soft Skill ,manager management
+,Soft Skill ,managing difficult conversations
+,Soft Skill ,managing remote teams
+,Soft Skill ,managing virtual teams
+,Soft Skill ,mind mapping
+,Soft Skill ,non-verbal communication
+,Soft Skill ,office politics
+,Soft Skill ,office politics management
+,Soft Skill ,patience
+,Soft Skill ,perseverant
+,Soft Skill ,personal branding
+,Soft Skill ,personal time management
+,Soft Skill ,personality conflicts management
+,Soft Skill ,persuasion
+,Soft Skill ,physical communication
+,Soft Skill ,positive reinforcement
+,Soft Skill ,questioning
+,Soft Skill ,quick-wittedness
+,Soft Skill ,recall
+,Soft Skill ,reframing
+,Soft Skill ,remote team management
+,Soft Skill ,respectfulness
+,Soft Skill ,sales skills
+,Soft Skill ,self assessment
+,Soft Skill ,self awareness
+,Soft Skill ,self confidence
+,Soft Skill ,self leadership
+,Soft Skill ,selflessness
+,Soft Skill ,social skills
+,Soft Skill ,stress management
+,Soft Skill ,taking criticism
+,Soft Skill ,task planning
+,Soft Skill ,task tracking
+,Soft Skill ,team-building
+,Soft Skill ,technology savvy
+,Soft Skill ,technology trend awareness
+,Soft Skill ,time awareness
+,Soft Skill ,tolerance of change and uncertainty
+,Soft Skill ,train the trainer
+,Soft Skill ,trainable
+,Soft Skill ,virtual team management
+,Soft Skill ,visual communication
+,Soft Skill ,writing reports and proposals
