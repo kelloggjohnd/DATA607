@@ -579,10 +579,40 @@ ggplot(final_df_sub, aes(x=reorder(`Soft Skill`, Frequency),y=Frequency)) +
 #### 3.2 Comparisons across the Data Science and Nurse Job Descriptions (calculating proportions)
 Once we had confirmed many of our frequencies, Misha took the counts from both the Data Science table and the Nurse table and combined it into one data frame. He then was able to calculate proportions of the prevalence of each soft skill out of the total soft skills in each list. Finally, he subtracted the proportions for each soft skill across the two different job descriptions to get a delta value.
 
-The delta value that Misha calculated is a good way to compare the soft skills prioritized by Data Science jobs compared to Nurse jobs. The higher the delta value, the more the soft skill is prioritized by Data Science jobs, the smaller the delta value, the more the soft skill is valued by Nurse jobs. Below, you can see that I read in Misha's data frame and plotted the most extreme deltas (both ways), on one plot for our group.
+The delta value that Misha calculated is a good way to compare the soft skills prioritized by Data Science jobs compared to Nurse jobs. The higher the delta value, the more the soft skill is prioritized by Data Science jobs, the smaller the delta value, the more the soft skill is valued by Nurse jobs. Below, you can see the code used to generate Misha's data frame and the written by John plotting the most extreme deltas (both ways), on one plot for our group.
 
-```{r}
-misha_df <- read.csv('https://raw.githubusercontent.com/mkollontai/DATA607/master/Project3/Data_vs_Nurse_Counts.csv')
+```{r show counts, eval = FALSE}
+#Create variables for numbers of job descriptions and skills
+DataN <- nrow(full_df)
+NurseN <- nrow(nurse_full_df)
+SkillN <- nrow(soft_skills)
+
+#For each Soft Skill,
+for (j in 1:SkillN){
+  # add a zero entry under the column NurseCounts in final_df
+  final_df$NurseCount[j] <- 0
+  #For each Nurse Job description in the dataframe nurse_full_df
+  for (i in 1:NurseN){
+    #Set the value in the NurseCount column to the number of times the term in the job_description column appears in the job description 
+    final_df$NurseCount[j] <- final_df$NurseCount[j] + str_count(tolower(nurse_full_df$job_description[i]),tolower(soft_skills$Text[j]))
+  }
+}
+#Copy this to a separate dataframe (to avoid altering the total dataframe)
+misha_df <- final_df
+
+#Add columns for the frequency per job listing each skill appeared
+misha_df$DataProp <- round(misha_df$Frequency / DataN, 4)
+misha_df$NurseProp <- round(misha_df$NurseCount / NurseN, 4)
+
+#Add a column that calculates the delta between the per listing amounts within Data Analyst listings and Nurse listings. 
+misha_df$Delta <- misha_df$DataProp - misha_df$NurseProp
+
+#Rename the columns  
+names(misha_df) <- c("Skill", "DataCount", "NurseCount", "DataProp", "NurseProp", "Delta")
+
+#Finally, isolate only those skills that were present in at least one job listing to narrow the relevant list
+misha_df <- misha_df[!(misha_df$DataCount == 0 & misha_df$NurseCount == 0),]
+
 ```
 
 ```{r delta_plots}
