@@ -62,7 +62,7 @@ This project contains the following Sections:
 
 ##1. Data Collection
 
-To centralize the focus all team members used the job search engine [link](Indeed.com) to gather job descriptions focusing on "Data Science Jobs" with a geotarget based on a 15-mile radius around New York.  Jose spearheaded this effort with great success.  Once he scraped the data from indeed.com, he then was able to manipulate and tidy the data into a data frame of 4 different columns, including "job_title", "company_name", "job_location", and "job_description".  In all, the team was able to pull in jobs data from 1,412 different listings for Data Science positions.He also worked through a fair amount of string parsing, using various techniques such as a Textrank algorithm utilized by Google's Pagerank, Rapid Automatic Keyword Extraction (RAKE), Dependency parsing, and noun extraction. Although these techniques showed mild progress, there was unfortunately too much noise in the job descriptions, and it was hard to narrow down the extractions to soft skills.  Nonetheless, Jose set our group up really well with a large data frame of Data Science jobs data, with a job descriptions vector that we could use for further analysis.  The rest of the team set to work on cleaning up and defining Jose's hard efforts.
+To centralize the focus all team members used the job search engine [link](Indeed.com) to gather job descriptions focusing on "Data Science Jobs" with a geotarget based on a 15-mile radius around New York.  We scraped the data from indeed.com, then manipulated and tidied the data into a data frame of 4 different columns, including "job_title", "company_name", "job_location", and "job_description".  In all, the team was able to pull in jobs data from 1,412 different listings for Data Science positions. We also worked through a fair amount of string parsing, using various techniques such as a Textrank algorithm utilized by Google's Pagerank, Rapid Automatic Keyword Extraction (RAKE), Dependency parsing, and noun extraction. Although these techniques showed mild progress, there was unfortunately too much noise in the job descriptions, and it was hard to narrow down the extractions to soft skills.  Nonetheless, we were set up really well with a large data frame of Data Science jobs data, with a job descriptions vector that we could use for further analysis.
 
 ***
   
@@ -129,14 +129,14 @@ for(i in seq_along(page_results)) {
 }
 ```
 
-* Export the raw scrap file to CSV since as we have a data frame containing enough information for later analysis and load into a SQL DB.
+* Export the raw scrape file to CSV since as we have a data frame containing enough information for later analysis and load into a SQL DB.
 * When complete, the results are written to a csv
   
 ***
 
 #### 1.2 Upload into SQL Cloud
 
-Using the Indeedscrap.csv an initial Database was created to enable the rest of the team to start work on a centralized data frame.  Utilizing Google Cloud MYSQL, John created a schema and subsequent databases.  
+Using the Indeedscrap.csv an initial Database was created to enable the rest of the team to start work on a centralized data frame.  Utilizing Google Cloud MYSQL, we created a schema and subsequent databases.  
 
 ##### Process notes:   
 Due to restrictions in Google MySQL and to ensure the team was able to work on the cleanest data possible, a second DQS schema was required on a local machine.  Using the lower environment instance, the CSV could load with no restrictions then be exported/imported into a clean database in the production Project 3 DB.  
@@ -167,7 +167,9 @@ full_df <- dbGetQuery(mydb, 'SELECT * FROM project3.indeed')
 ***
 
 #### 1.3 Soft Skills list
-The idea here is to pull a list of soft-skills so that we can identify when we see one in the indeed data scrape. I took a couple of top Google results and scraped them into one list: [link](https://training.simplicable.com/training/new/87-soft-skills)
+In order to separate "soft" from "hard" skills, we googled "list of soft skills" and built a list of skills from the top results.
+
+First list: [link](https://training.simplicable.com/training/new/87-soft-skills)
 
 ```{r goodhabits_data}
 # Get list from "developgoodhabits.com"
@@ -209,32 +211,31 @@ This data was loaded into a SQL DB for everyone to utilize for analysis.
 
 #### 1.3.2 Third Skill list  
 
-Zach pulled a final list of *hard* skills for data scientists. In the end, he was thinking we could use this list to compare some of the most common hard skills to the soft skills we've been working with. Some of the skills were added into our larger soft-skills list since they qualified more as soft skills than hard skills.  John parsed through the list and made these distinctions with group agreement before uploading the hard skill list into the database as a separate normalized table.
+We pulled a final list of *hard* skills for data scientists, so we could use this list to compare some of the most common hard skills to the soft skills we've been working with. Some of the skills were added into our larger soft-skills list since they qualified more as soft skills than hard skills. We parsed through the list and made these distinctions with group agreement before uploading the hard skill list into the database as a separate normalized table.
   
 ```{r hardskill_pull}
-# found one website with a good list of hard skills for data scientists
+# Website with a good list of hard skills for data scientists
 url_1 <- "https://towardsdatascience.com/top-skills-every-data-scientist-needs-to-master-5aba4293b88"
 page_1 <- xml2::read_html(url_1)
-# after reading in this html data, I then manipulated it and extracted the relevant skills
+# after reading in this html data,  manipulate it and extracted the relevant skills
 skills_1 <- page_1 %>% 
   rvest::html_nodes("div") %>% 
   rvest::html_nodes("strong") %>% 
   rvest::html_text()
 skills_1 <- skills_1[c(2:10)]
-# I found a second website with a long list of hard skills for data scientists
+# Second website with a long list of hard skills for data scientists
 url_2 <- "https://www.thebalancecareers.com/list-of-data-scientist-skills-2062381"
 page_2 <- xml2::read_html(url_2)
-# again, after reading in this html data I extracted the relevant skills
+# Read HTML and extract relevant skills
 skills_2 <- page_2 %>% 
   rvest::html_nodes('div') %>% 
   rvest::html_nodes('ul') %>% 
   rvest::html_nodes('li') %>% 
   rvest::html_text()
 skills_2 <- skills_2[c(7:96)]
-# I then appended both lists into one long list
+# Append into one long list
 skills_fnl <- append(skills_1, skills_2)
-# in order to export it to a csv, I converted the combined lists to a dataframe and
-# made the skills all lowercase for ease in analysis later on
+# Convert to data and move to lowercase for easier analysis later on
 skills_df <- data.frame(matrix(NA, nrow = length(skills_fnl), ncol = 2))
 skills_df <- skills_df %>% 
   mutate(X1 = nrow(1:length(skills_fnl)),
@@ -243,14 +244,14 @@ skills_df <- skills_df %>%
   select(X2) %>% 
   mutate(X2 = tolower(X2)) %>% 
   distinct()
-# I then saved this to a csv file and sent it along to John to upload into our centralized database
+# Save to csv for later upload into database
 write.csv(skills_df, file = "more_skills.csv")
 ```
 
 ***
   
 #### 1.4 Nurse Skill list  
-The next section, we pull data on a completely unrelated field, Nursing.  This data will be utilized later as a method to identify skills intrinsically data driven. As sbove, this section is not in a chunk as the data on the job site is constantly changing.  The results of this section were added to the SQL database as *nurse_indeed*    
+The next section, we pulled data on a completely unrelated field, Nursing. This data was be utilized later as a method to identify skills intrinsically data driven. As above, this section is not in a chunk as the data on the job site is constantly changing.  The results of this section were added to the SQL database as *nurse_indeed*    
 
 ``` {r nurse_scrape, eval = FALSE}
 page_result_start <- 10 # starting page 
@@ -317,7 +318,7 @@ nurse_full_df <- dbGetQuery(mydb, 'SELECT * FROM project3.nurse_indeed')
   
 ## 2. Data Analysis
 
-Now that we have the data all in pulled and in one place, we can start breaking down what we have; manuiplating it to find trends and key words.  Various methods are utilized to ensure we have a compresivive list.  
+We with the data all in pulled and in one place, we started breaking down what we had; manuiplating it to find trends and key words.  Various methods were utilized to ensure we have a compresivive list.  
 
 Example: utilizing the direct SQL connection to find frequency of specific words, more on this later.  
 
@@ -346,7 +347,7 @@ for (i in 1:rows_soft_skils) {
 
 #### 2.1 Using UDPIPE library with Indeed Data Scientist Data**  
   
-For the following analysis we will use the the UDPIPE library to break up job descriptions into text units that we can more easily analyse. UDPIPE is described as "natural language processing toolkit provides language-agnostic 'tokenization', 'parts of speech tagging', 'lemmatization' and 'dependency parsing' of raw text."
+For the following analysis we used the the UDPIPE library to break up job descriptions into text units that we can more easily analyze. UDPIPE is described as "natural language processing toolkit provides language-agnostic 'tokenization', 'parts of speech tagging', 'lemmatization' and 'dependency parsing' of raw text."
 
 ```{r comment_pull, echo=FALSE}
 comments <- subset(full_df)
@@ -502,7 +503,7 @@ dim(cooc)
 
 #### 2.7 Word Network
 
-Lets create a wordnetwork of all the words (chosen from our skill list) we filtered previously.
+We created a wordnetwork of all the words (chosen from our skill list) we filtered previously.
 
 ```{r, fig.width=10,fig.height=11}
 library(igraph)
@@ -575,7 +576,7 @@ ggplot(final_df_sub, aes(x=reorder(`Soft Skill`, Frequency),y=Frequency)) +
 #### 3.2 Comparisons across the Data Science and Nurse Job Descriptions (calculating proportions)
 Once we had confirmed many of our frequencies, Misha took the counts from both the Data Science table and the Nurse table and combined it into one data frame. He then was able to calculate proportions of the prevalence of each soft skill out of the total soft skills in each list. Finally, he subtracted the proportions for each soft skill across the two different job descriptions to get a delta value.
 
-The delta value that Misha calculated is a good way to compare the soft skills prioritized by Data Science jobs compared to Nurse jobs. The higher the delta value, the more the soft skill is prioritized by Data Science jobs, the smaller the delta value, the more the soft skill is valued by Nurse jobs. Below, you can see the code used to generate Misha's data frame and the written by John plotting the most extreme deltas (both ways), on one plot for our group.
+The delta value is a good way to compare the soft skills prioritized by Data Science jobs compared to Nurse jobs. The higher the delta value, the more the soft skill is prioritized by Data Science jobs, the smaller the delta value, the more the soft skill is valued by Nurse jobs. Below, you can see the code used to generate the data frame and plot the most extreme deltas (both ways), on one plot for our group.
 
 ```{r show counts, eval = FALSE}
 #Create variables for numbers of job descriptions and skills
@@ -594,32 +595,32 @@ for (j in 1:SkillN){
   }
 }
 #Copy this to a separate dataframe (to avoid altering the total dataframe)
-misha_df <- final_df
+delta_df <- final_df
 
 #Add columns for the frequency per job listing each skill appeared
-misha_df$DataProp <- round(misha_df$Frequency / DataN, 4)
-misha_df$NurseProp <- round(misha_df$NurseCount / NurseN, 4)
+delta_df$DataProp <- round(delta_df$Frequency / DataN, 4)
+delta_df$NurseProp <- round(delta_df$NurseCount / NurseN, 4)
 
 #Add a column that calculates the delta between the per listing amounts within Data Analyst listings and Nurse listings. 
-misha_df$Delta <- misha_df$DataProp - misha_df$NurseProp
+delta_df$Delta <- delta_df$DataProp - delta_df$NurseProp
 
 #Rename the columns  
-names(misha_df) <- c("Skill", "DataCount", "NurseCount", "DataProp", "NurseProp", "Delta")
+names(delta_df) <- c("Skill", "DataCount", "NurseCount", "DataProp", "NurseProp", "Delta")
 
 #Finally, isolate only those skills that were present in at least one job listing to narrow the relevant list
-misha_df <- misha_df[!(misha_df$DataCount == 0 & misha_df$NurseCount == 0),]
+delta_df <- delta_df[!(delta_df$DataCount == 0 & delta_df$NurseCount == 0),]
 
 ```
 
 ```{r delta_plots}
 # frequency bar chart 1 (data)
-freq_bar <- misha_df %>% 
+freq_bar <- delta_df %>% 
   filter(DataCount >= 160) %>% 
   arrange(DataCount)
-freq_bar_nurse <- misha_df %>% 
+freq_bar_nurse <- delta_df %>% 
   filter(NurseCount >= 40) %>% 
   arrange(NurseCount)
-freq_bar_delta <- misha_df %>% 
+freq_bar_delta <- delta_df %>% 
   filter(Delta >= 0.1 | Delta <= -0.05) %>% 
   arrange(Delta) %>% 
   mutate(fillColor = ifelse(Delta > 0, 
@@ -840,7 +841,7 @@ ggplot(data=h_key_total,
 ***
 #### 3.5 Key Word in Context (KWIC) Listings
 
-Zach did some [text analysis research](https://kenbenoit.net/pdfs/text_analysis_in_R.pdf) and found R package ('corpustools').  Corpustools allowed him to find the number of hits that two words would be found within a given distance from one another in a corpus. Utilizing this method generated interesting tests on our top hard skill and top soft skill words, and see if certain hard skills frequently found closer (or were associated) with our top soft skills.  
+We did some [text analysis research](https://kenbenoit.net/pdfs/text_analysis_in_R.pdf) and found R package ('corpustools').  Corpustools allowed him to find the number of hits that two words would be found within a given distance from one another in a corpus. Utilizing this method generated interesting tests on our top hard skill and top soft skill words, and see if certain hard skills frequently found closer (or were associated) with our top soft skills.  
   
 ```{r, warning=FALSE, message=FALSE}
 tc <- create_tcorpus(full_df$job_description)
@@ -928,7 +929,7 @@ No matter what approaches we used, we found that there are several "soft skills"
 
 It was especially interesting to see that 5 of the terms in our Top-12 were not found a single time within 569 job listings for Nurse positions in the New York area. None of "Professional", "Insight", "Leadership", "Presentation" or "Training" were mentioned in a single job description for these Nurse positions. This suggests that these are not simply words that appear in any generic job description - they are skills specifically sought for in Data Scientists. The remaining 7, while appearing occasionally in Nurse job descriptions, still showed incredibly high Delta values in terms of per listing frequency. The highest per Nurse listing Top-12 skill was Design with a 0.0562 per listing frequency (meaning it appeared on average in 1 out of around 18 Nurse listings), but this was dwarfed by the Data Analyst frequency of 1.0779 (meaning it appeared on average more than once a listing). 
 
-Data Analyst jobs appear to want a focused, insightful professional, who can analyze the results of research of his own design to come up with insights that he can then use to focus on training others within the organization. 
+Data Analyst jobs appear to want a focused, insightful professional, who can analyze the results of research of their own design to come up with insights that they can then use to focus on training others within the organization. 
 
 ## 5. Potential Next Steps
 
@@ -939,8 +940,5 @@ While working on this project we often found ourselves thinking about additional
 * Accounting for the possibility that the Company Name contains a search term
 
 * Looking at searches in different parts of the world to see if the skills sought are affected by culture/geography
-
-*
-
 
 
