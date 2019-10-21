@@ -1,9 +1,10 @@
 ---
 title: "DATA 607 - Project 3 - Soft Skills"
+subtitle: "Authors:Zach Alexander, Erinda Budo, Steven Ellingson, John Kellogg, Misha Kollontai, Jose Mawyin"
 team: "Indeed Data Team"
-authors: "Zach Alexander, Erinda Budo, Steven Ellingson, John Kellogg, Misha Kollantai, Jose Mawyin"
+authors: "Zach Alexander, Erinda Budo, Steven Ellingson, John Kellogg, Misha Kollontai, Jose Mawyin"
 date: "10/14/2019"
-output: html_document
+output: pdf_document
 ---
 
 ```{r library, include=FALSE}
@@ -34,40 +35,33 @@ library(xml2)
 
 # Scraping Indeed for Soft Skills Relevant to a Data Scientist
 
-##Introduction
+## Introduction
 
 In the field of Data Science, the mastery of “Hard Skills” (e.g. programming, math, analysis, etc) is seen as a necessity when joining the ranks of data scientists and working within the data community. Most new data scientists have studied these skills as part of the curriculum of universities and training centers where people learn about the growing field. All data scientists are expected to reach proficiency in these skills in order to be ready to meet job requirements; this is only half of what is needed to exceed in the market. 
 
-There is also a set of soft skills needed to effectively interact with other people who are not in the data science field.  They make up a large part of the skillset that employees are looking for.  Soft skills build better data science teams as well as present their findings to the business at large.  One can not be proficient without the other.   
+There is also a set of soft skills needed to effectively interact with other people who are not in the data science field.  They make up a large part of the skillset that employees are looking for.  Soft skills build better data science teams as well as present their findings to the business at large.  One can not be proficient without the other. 
 
-Our group took a dive into what soft skills are most highly sought after; are most in demand.
-
+Our group took a dive into what soft skills are most highly sought after/are most in demand.
 
 This project contains the following Sections:
 
 1. Data Collection
 2. Data Analysis
-  + What did not work as hoped
-    + Google Textrank
-    + Rapid Automatic Keyword Extraction (RAKE)
-    + Dependency Parsing
-  + What worked
-    + Term matching from a List
-    + Visualizing keyword network and clusters
 3. Team Analysis
 4. Conclusions
+5. Potential Next Steps
 
-***
+\clearpage
 
-##1. Data Collection
+## 1. Data Collection
 
-To centralize the focus all team members used the job search engine [link](Indeed.com) to gather job descriptions focusing on "Data Science Jobs" with a geotarget based on a 15-mile radius around New York.  We scraped the data from indeed.com, then manipulated and tidied the data into a data frame of 4 different columns, including "job_title", "company_name", "job_location", and "job_description".  In all, the team was able to pull in jobs data from 1,412 different listings for Data Science positions. We also worked through a fair amount of string parsing, using various techniques such as a Textrank algorithm utilized by Google's Pagerank, Rapid Automatic Keyword Extraction (RAKE), Dependency parsing, and noun extraction. Although these techniques showed mild progress, there was unfortunately too much noise in the job descriptions, and it was hard to narrow down the extractions to soft skills.  Nonetheless, we were set up really well with a large data frame of Data Science jobs data, with a job descriptions vector that we could use for further analysis.
+To centralize the focus, a slack channel was created and communications started on what we would gather.  We chose a method of all team members using the job search engine [link](Indeed.com) to gather job descriptions focusing on "Data Science Jobs" with a geotarget based on a 15-mile radius around New York.  We scraped the data from indeed.com, then manipulated and tidied the data into a data frame of 4 different columns, including "job_title", "company_name", "job_location", and "job_description".  In all, the team was able to pull in jobs data from 1,412 different listings for Data Science positions. We also worked through a fair amount of string parsing, using various techniques such as a Textrank algorithm utilized by Google's Pagerank, Rapid Automatic Keyword Extraction (RAKE), Dependency parsing, and noun extraction. Although these techniques showed mild progress, there was unfortunately too much noise in the job descriptions, and it was hard to narrow down the extractions to soft skills.  Nonetheless, we were set up really well with a large data frame of Data Science jobs data, with a job descriptions vector that we could use for further analysis.
 
 ***
   
 #### 1.1 Data Collection process
 
-* Launch [link](Indeed.com) and run a search focusing the query to Data Scientist Jobs based in a 15 mile radius around New York City. 
+* Launch [Indeed.com](Indeed.com) and run a search focusing the query to Data Scientist Jobs based in a 15 mile radius around New York City. 
 * The code below scraps through [link](Indeed.com) then sorts the info from job postings into 4 different columns: job_title, company_name, job_location, job_description.
 
 For the purpose of this paper and so none of the main values change during the life of the paper, The following is not provided as R scripting in a code chunk.  It is the method utilized by the team to gain the initial data.  The result of this code will be loaded straight from the CSV initially generated by the team. 
@@ -84,7 +78,8 @@ for(i in seq_along(page_results)) {
   url <- paste0(first_page_url, "&start=", page_results[i])
   page <- xml2::read_html(url)
   # Sys.sleep pauses R for two seconds before it resumes
-  # Putting it there avoids error messages such as "Error in open.connection(con, "rb") : Timeout was reached"
+  # Putting it there avoids error messages such as "Error in
+  # open.connection(con, "rb") : Timeout was reached"
   Sys.sleep(3)
   
   #get the job title
@@ -119,7 +114,8 @@ for(i in seq_along(page_results)) {
     
     job_description[[i]] <- page %>%
   rvest::html_nodes("span")  %>% 
-  rvest::html_nodes(xpath = '//*[@class="jobsearch-JobComponent-description  icl-u-xs-mt--md  "]') %>% 
+  rvest::html_nodes(xpath = '//*[@class="jobsearch-JobComponent-description  
+                    icl-u-xs-mt--md  "]') %>% 
   rvest::html_text() %>%
   stringi::stri_trim_both()
   }
@@ -158,7 +154,8 @@ FROM project3 p
 JOIN project_text t on p.ID = t.ID;
 
 ```{r SQL_tables}
-# using our centralized database, I pulled in data from our normalized tables and did some frequency matching
+# Using our centralized database, I pulled in data from our
+# normalized tables and did some frequency matching
 mydb = dbConnect(MySQL(), user='admin', password='project3', host='34.68.107.105', port = 3306)
 full_df <- dbGetQuery(mydb, 'SELECT * FROM project3.indeed')
 ```
@@ -264,7 +261,8 @@ for(i in seq_along(page_results)) {
   url <- paste0(first_page_url, "&start=", page_results[i])
   page <- xml2::read_html(url)
   # Sys.sleep pauses R for two seconds before it resumes
-  # Putting it there avoids error messages such as "Error in open.connection(con, "rb") : Timeout was reached"
+  # Putting it there avoids error messages such as "Error in
+  # open.connection(con, "rb") : Timeout was reached"
   Sys.sleep(2)
   
   #get the job title
@@ -299,7 +297,8 @@ for(i in seq_along(page_results)) {
     
     job_description[[i]] <- page %>%
   rvest::html_nodes("span")  %>% 
-  rvest::html_nodes(xpath = '//*[@class="jobsearch-JobComponent-description  icl-u-xs-mt--md  "]') %>% 
+  rvest::html_nodes(xpath = '//*[@class="jobsearch-JobComponent-description  
+                    icl-u-xs-mt--md  "]') %>% 
   rvest::html_text() %>%
   stringi::stri_trim_both()
   }
@@ -308,20 +307,20 @@ for(i in seq_along(page_results)) {
 }
 ```
 
-```{r nurse_QC, include= FALSE}
+```{r nurse_QC}
 mydb = dbConnect(MySQL(), user='admin', password='project3', host='34.68.107.105', port = 3306)
 nurse_full_df <- dbGetQuery(mydb, 'SELECT * FROM project3.nurse_indeed')
 ```
 
-***
+\clearpage
   
 ## 2. Data Analysis
 
-We with the data all in pulled and in one place, we started breaking down what we had; manuiplating it to find trends and key words.  Various methods were utilized to ensure we have a compresivive list.  
+With the data in one place, we started breaking down what we had; manipulating it to find trends and key words.  Various methods were utilized to ensure we have a comprehensive list.  
 
 Example: utilizing the direct SQL connection to find frequency of specific words, more on this later.  
 
-```{r example, echo=FALSE}
+```{r example}
 soft_skills <- dbGetQuery(mydb, 'SELECT * FROM project3.skills_text')
 soft_skills <- soft_skills %>% 
   mutate(Text = tolower(Text)) %>% 
@@ -339,6 +338,7 @@ for (i in 1:rows_soft_skils) {
   final_df[i,1] <- soft_skills[i,2]
   final_df[i,2] <- frequency
 }  
+lapply(dbListConnections( dbDriver( drv = "MySQL")), dbDisconnect)
 ```
 
 ***
@@ -424,8 +424,7 @@ top20.byDependency <- head(stats,20)
 top20.byDependency
 ```
 
-
-***
+\clearpage
 
 ## 3. Analysis findings from the team
 
@@ -446,7 +445,8 @@ ggplot(final_df_sub, aes(x=reorder(`Soft Skill`, Frequency),y=Frequency)) +
   xlab('Soft Skill') +
   coord_flip() +
   ggtitle("What are the most valued soft skills for Data Scientists?") + 
-  geom_text(aes(label=Frequency), vjust=0.5, hjust=1.10, position = position_dodge(width = 0.9), color="white", fontface="bold")
+  geom_text(aes(label=Frequency), vjust=0.5, hjust=1.10, position = position_dodge(width = 0.9), 
+            color="white", fontface="bold")
 ```
 
 ***
@@ -456,7 +456,7 @@ Once we had confirmed many of our frequencies, Misha took the counts from both t
 
 The delta value is a good way to compare the soft skills prioritized by Data Science jobs compared to Nurse jobs. The higher the delta value, the more the soft skill is prioritized by Data Science jobs, the smaller the delta value, the more the soft skill is valued by Nurse jobs. Below, you can see the code used to generate the data frame and plot the most extreme deltas (both ways), on one plot for our group.
 
-```{r show counts, eval = FALSE}
+```{r show counts}
 #Create variables for numbers of job descriptions and skills
 DataN <- nrow(full_df)
 NurseN <- nrow(nurse_full_df)
@@ -467,8 +467,10 @@ for (j in 1:SkillN){
   final_df$NurseCount[j] <- 0
   #For each Nurse Job description in the dataframe nurse_full_df
   for (i in 1:NurseN){
-    #Set the value in the NurseCount column to the number of times the term in the job_description column appears in the job description 
-    final_df$NurseCount[j] <- final_df$NurseCount[j] + str_count(tolower(nurse_full_df$job_description[i]),tolower(soft_skills$Text[j]))
+    #Set the value in the NurseCount column to the number of times the term in the 
+    #job_description column appears in the job description 
+    final_df$NurseCount[j] <- final_df$NurseCount[j] +
+      str_count(tolower(nurse_full_df$job_description[i]),tolower(soft_skills$Text[j]))
   }
 }
 #Copy this to a separate dataframe (to avoid altering the total dataframe)
@@ -476,11 +478,13 @@ delta_df <- final_df
 #Add columns for the frequency per job listing each skill appeared
 delta_df$DataProp <- round(delta_df$Frequency / DataN, 4)
 delta_df$NurseProp <- round(delta_df$NurseCount / NurseN, 4)
-#Add a column that calculates the delta between the per listing amounts within Data Analyst listings and Nurse listings. 
+#Add a column that calculates the delta between the per listing
+#amounts within Data Analyst listings and Nurse listings. 
 delta_df$Delta <- delta_df$DataProp - delta_df$NurseProp
 #Rename the columns  
 names(delta_df) <- c("Skill", "DataCount", "NurseCount", "DataProp", "NurseProp", "Delta")
-#Finally, isolate only those skills that were present in at least one job listing to narrow the relevant list
+#Finally, isolate only those skills that were present in at
+#least one job listing to narrow the relevant list
 delta_df <- delta_df[!(delta_df$DataCount == 0 & delta_df$NurseCount == 0),]
 ```
 
@@ -498,7 +502,7 @@ freq_bar_delta <- delta_df %>%
   mutate(fillColor = ifelse(Delta > 0, 
                             'More Prevalent in Data Science Job Descriptions', 
                             'More Prevalent in Nurse Job Descriptions'))
-ggplot(freq_bar_delta, aes(x=reorder(Text, Delta),y=Delta, fill=fillColor)) +
+ggplot(freq_bar_delta, aes(x=reorder(Skill, Delta),y=Delta, fill=fillColor)) +
   geom_bar(position="dodge",stat="identity", color = "#dddddd") + 
   scale_fill_manual("Proportion of Skill", 
                     values = c("More Prevalent in Data Science Job Descriptions" = "#C0DF85", 
@@ -509,7 +513,8 @@ ggplot(freq_bar_delta, aes(x=reorder(Text, Delta),y=Delta, fill=fillColor)) +
   ylab('Proportional difference') +
   xlab('Soft Skill') +
   coord_flip() +
-  geom_text(aes(label=round(Delta, digits = 2), y = Delta + 0.15 * sign(Delta)), position = position_dodge(width = 0.5), color="#333333", fontface="bold", size=3.5) +
+  geom_text(aes(label=round(Delta, digits = 2), y = Delta + 0.15 * sign(Delta)), 
+            position = position_dodge(width = 0.5), color="#333333", fontface="bold", size=3.5) +
   theme(legend.position = "bottom")
 ```
 
@@ -608,10 +613,11 @@ top_skills <- full_df %>%
          str_detect(job_description, 'statistics'))
 full_df_rows <- nrow(full_df)
 top_skill_rows <- nrow(top_skills)
-paste0('Proportion of top hard skills in job descriptions = ', round(top_skill_rows/full_df_rows, digits = 4))
+paste0('Proportion of top hard skills in job descriptions = ',
+       round(top_skill_rows/full_df_rows, digits = 4))
 ```
 
-```{r keyword_frequency, echo=FALSE}
+```{r keyword_freq, echo=FALSE}
 h_key_word_1<- 
 full_df %>% 
   filter (grepl('machine learning',job_description, ignore.case = TRUE))%>%
@@ -685,26 +691,26 @@ ggplot(data=h_key_total,
 ***
 #### 3.5 Key Word in Context (KWIC) Listings
 
-We did some [text analysis research](https://kenbenoit.net/pdfs/text_analysis_in_R.pdf) and found R package ('corpustools').  Corpustools allowed him to find the number of hits that two words would be found within a given distance from one another in a corpus. Utilizing this method generated interesting tests on our top hard skill and top soft skill words, and see if certain hard skills frequently found closer (or were associated) with our top soft skills.  
+We did some [text analysis research](https://kenbenoit.net/pdfs/text_analysis_in_R.pdf) and found R package ('corpustools').  Corpustools allowed us to find the number of hits that two words would be found within a given distance from one another in a corpus. Utilizing this method generated interesting tests on our top hard skill and top soft skill words, and see if certain hard skills frequently found closer (or were associated) with our top soft skills.  
   
 ```{r, warning=FALSE, message=FALSE}
 tc <- create_tcorpus(full_df$job_description)
-hits_1_2 <- tc$search_features('"analysis machine*"~40')
-hits_1_3 <- tc$search_features('"analysis sql"~40')
-hits_1_4 <- tc$search_features('"analysis python"~40')
-hits_1_5 <- tc$search_features('"analysis statistics"~40')
-hits_2_2 <- tc$search_features('"research machine*"~40')
-hits_2_3 <- tc$search_features('"research sql"~40')
-hits_2_4 <- tc$search_features('"research python"~40')
-hits_2_5 <- tc$search_features('"research statistics"~40')
-hits_3_2 <- tc$search_features('"focus machine*"~40')
-hits_3_3 <- tc$search_features('"focus sql"~40')
-hits_3_4 <- tc$search_features('"focus python"~40')
-hits_3_5 <- tc$search_features('"focus statistics"~40')
-hits_4_2 <- tc$search_features('"insight machine*"~40')
-hits_4_3 <- tc$search_features('"insight sql"~40')
-hits_4_4 <- tc$search_features('"insight python"~40')
-hits_4_5 <- tc$search_features('"insight statistics"~40')
+hits_1_2 <- tc$search_features('"analysis machine*"~25')
+hits_1_3 <- tc$search_features('"analysis sql"~25')
+hits_1_4 <- tc$search_features('"analysis python"~25')
+hits_1_5 <- tc$search_features('"analysis statistics"~25')
+hits_2_2 <- tc$search_features('"research machine*"~25')
+hits_2_3 <- tc$search_features('"research sql"~25')
+hits_2_4 <- tc$search_features('"research python"~25')
+hits_2_5 <- tc$search_features('"research statistics"~25')
+hits_3_2 <- tc$search_features('"focus machine*"~25')
+hits_3_3 <- tc$search_features('"focus sql"~25')
+hits_3_4 <- tc$search_features('"focus python"~25')
+hits_3_5 <- tc$search_features('"focus statistics"~25')
+hits_4_2 <- tc$search_features('"insight machine*"~25')
+hits_4_3 <- tc$search_features('"insight sql"~25')
+hits_4_4 <- tc$search_features('"insight python"~25')
+hits_4_5 <- tc$search_features('"insight statistics"~25')
 kwic_1_2 <- tc$kwic(hits_1_2, ntokens = 3)
 kwic_1_3 <- tc$kwic(hits_1_3, ntokens = 3)
 kwic_1_4 <- tc$kwic(hits_1_4, ntokens = 3)
@@ -753,15 +759,8 @@ plot(ca(k_pool), main = "Correspondence Analysis", pch = 19)
 
 
 ```{r}
-customGreen0 = "#DeF7E9"
-customGreen = "#71CA97"
-formattable(k_pool, align =c("c","c","c","c"), list(
-  machine_learning= color_tile(customGreen0, customGreen),
-  sql= color_tile(customGreen0, customGreen),
-  statistics= color_tile(customGreen0, customGreen),
-  python= color_tile(customGreen0, customGreen),
-  statistics= color_tile(customGreen0, customGreen)
-))
+kable(k_pool, align = rep('c', 4)) %>%
+  kable_styling(bootstrap_options = c("striped"), full_width = F)
 ```
 
 ***
@@ -787,7 +786,12 @@ dim(cooc)
 The co-occurrence table (cooc) above contains the frequencies of co-occurrence between each pair of words. Initally contained ALL the words in the text but we are only interested in the words that are part to the soft skills of interest. The chunk below filters out the co-occurrence table.
 ```{r}
 library(tidytext)
-slill.comp <- c("analysis", "design", "focus", "innovation", "insight", "integrity", "organization", "presentation", "process", "improvement", "research", "skills", "adaptability", "supervising", "tolerance", "coordination", "planning", "professional", "training", "collaborative", "motivated", "work", "experience", "verbal", "responsible", "person")
+slill.comp <- c("analysis", "design", "focus", "innovation", "insight", 
+                "integrity", "organization", "presentation", "process", "improvement", 
+                "research", "skills", "adaptability", "supervising", 
+                "tolerance", "coordination", "planning", "professional", 
+                "training", "collaborative", "motivated", "work", 
+                "experience", "verbal", "responsible", "person")
 cooc <- subset(cooc, term1 %in% slill.comp)
 cooc <- subset(cooc, term2 %in% slill.comp)
 dim(cooc)
@@ -820,7 +824,8 @@ We can also analyze how the skill words are cluster together and visualize the r
 
 ```{r}
 ### Dendrogram using community detection
-# Community structure detection based on edge betweenness (http://igraph.org/r/doc/cluster_edge_betweenness.html)
+# Community structure detection based on edge betweenness
+# (http://igraph.org/r/doc/cluster_edge_betweenness.html)
 cluster_edge_betweenness(wordnetwork, weights = E(wordnetwork)$cooc)
 # Community detection via random walks (http://igraph.org/r/doc/cluster_walktrap.html)
 cluster_walktrap(wordnetwork, weights = E(wordnetwork)$cooc, steps = 4)
@@ -832,9 +837,11 @@ cluster_fast_greedy(wordnetwork2, weights = E(wordnetwork2)$cooc)
 comm <- cluster_fast_greedy(wordnetwork2, weights = E(wordnetwork2)$cooc)
 #plot_dendrogram(comm, palette = categorical_pal(8))
 plot_dendrogram(comm, mode="hclust", rect = 4, colbar = palette(rainbow(10)),
-            hang = 0.01, ann = FALSE, main = "Top Keywords in Data Science Job Descriptions", sub = "", xlab = "",
-            ylab = "")
+            hang = 0.01, ann = FALSE, main = "Top Keywords in Data Science Job 
+            Descriptions", sub = "", xlab = "", ylab = "")
 ```
+
+\clearpage
 
 ## 4. Conclusion
 
@@ -843,6 +850,8 @@ No matter what approaches we used, we found that there are several "soft skills"
 It was especially interesting to see that 5 of the terms in our Top-12 were not found a single time within 569 job listings for Nurse positions in the New York area. None of "Professional", "Insight", "Leadership", "Presentation" or "Training" were mentioned in a single job description for these Nurse positions. This suggests that these are not simply words that appear in any generic job description - they are skills specifically sought for in Data Scientists. The remaining 7, while appearing occasionally in Nurse job descriptions, still showed incredibly high Delta values in terms of per listing frequency. The highest per Nurse listing Top-12 skill was Design with a 0.0562 per listing frequency (meaning it appeared on average in 1 out of around 18 Nurse listings), but this was dwarfed by the Data Analyst frequency of 1.0779 (meaning it appeared on average more than once a listing). 
 
 Data Analyst jobs appear to want a focused, insightful professional, who can analyze the results of research of their own design to come up with insights that they can then use to focus on training others within the organization. 
+
+\clearpage
 
 ## 5. Potential Next Steps
 
