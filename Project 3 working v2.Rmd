@@ -1,6 +1,6 @@
 ---
 title: "DATA 607 - Project 3 - Soft Skills"
-subtitle: "Authors:Zach Alexander, Erinda Budo, Steven Ellingson, John Kellogg, Misha Kollontai, Jose Mawyin"
+subtitle: "Authors: Zach Alexander, Erinda Budo, Steven Ellingson, John Kellogg, Misha Kollontai, Jose Mawyin"
 team: "Indeed Data Team"
 authors: "Zach Alexander, Erinda Budo, Steven Ellingson, John Kellogg, Misha Kollontai, Jose Mawyin"
 date: "10/14/2019"
